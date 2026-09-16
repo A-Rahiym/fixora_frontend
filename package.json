@@ -67,5 +67,10 @@
 	},
 	"keywords": [
 		"svelte"
-	]
+	],
+	"dependencies": {
+		"@tanstack/svelte-query": "^6.1.48",
+		"bits-ui": "^2.19.2",
+		"zod": "^4.6.5"
+	}
 }
