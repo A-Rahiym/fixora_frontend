@@ -1,6 +1,11 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
-	import { getSystemStatus, loginWithRedirect } from '$lib/features/login/request';
+	import {
+		getSystemStatus,
+		loginWithRedirect,
+		sanitizeRedirect
+	} from '$lib/features/login/request';
 	import type { SystemStatus } from '$lib/features/login/request';
 	import LoginHero from '$lib/features/login/components/LoginHero.svelte';
 	import Alert from '$lib/components/ui/Alert.svelte';
@@ -16,6 +21,7 @@
 	let error = $state<string | null>(null);
 	let fieldErrors = $state<{ email?: string; password?: string }>({});
 	let systemStatus = $state<SystemStatus>('unknown');
+	const redirectTarget = $derived(sanitizeRedirect(page.url.searchParams.get('redirect')));
 
 	$effect(() => {
 		getSystemStatus().then((s) => {
@@ -27,7 +33,7 @@
 		e.preventDefault();
 		submitting = true;
 		try {
-			const result = await loginWithRedirect(email, password);
+			const result = await loginWithRedirect(email, password, undefined, redirectTarget);
 			error = result.error ?? null;
 			fieldErrors = result.fieldErrors ?? {};
 		} finally {
