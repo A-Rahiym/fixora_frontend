@@ -11,16 +11,18 @@ const FIXTURE: DashboardData = {
 			id: 'active-jobs',
 			label: 'Active Jobs',
 			value: '42',
+			caption: 'Current repairs in progress',
 			trend: { direction: 'up', text: '+12%' }
 		},
 		{
 			id: 'turnaround',
 			label: 'Avg. Turnaround',
 			value: '1.8d',
+			caption: 'Average repair cycle',
 			trend: { direction: 'up', text: '+1%' }
 		},
-		{ id: 'revenue', label: "Today's Revenue", value: '$12,450' },
-		{ id: 'efficiency', label: 'Efficiency', value: '98%' }
+		{ id: 'revenue', label: "Today's Revenue", value: '$12,450', caption: 'Collected today' },
+		{ id: 'efficiency', label: 'Efficiency', value: '98%', caption: 'First-time fix rate' }
 	],
 	revenue: {
 		currentTotal: 65950,

@@ -4,6 +4,7 @@ export const MetricSchema = z.object({
 	id: z.string(),
 	label: z.string(),
 	value: z.string(),
+	caption: z.string().optional(),
 	trend: z.object({ direction: z.enum(['up', 'down']), text: z.string() }).optional(),
 	actionLabel: z.string().optional(),
 	actionHref: z.string().optional()
