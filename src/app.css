@@ -43,6 +43,9 @@
 	--color-auth-page: #f1f2f6;
 	--color-auth-panel: #fbfbfe;
 
+	/* Shell surfaces (screens/dashboard.html) */
+	--color-shell-sidebar: #edf0f5;
+
 	/* Type */
 	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 	--font-mono: ui-monospace, monospace;
