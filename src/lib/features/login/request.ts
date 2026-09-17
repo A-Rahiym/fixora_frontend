@@ -63,6 +63,7 @@ export async function loginWithRedirect(
 	try {
 		await auth.login(parsed.data);
 	} catch (err) {
+		if (import.meta.env.DEV) console.warn('[auth] login failed:', err);
 		return { ok: false, error: mapLoginError(err as ApiErrorShape) };
 	}
 	const go: Navigator = navigate ?? (await import('$app/navigation')).goto;

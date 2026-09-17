@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { API_BASE_URL } from '$lib/config/env';
+import { clearToken, getToken } from './session';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -20,13 +21,21 @@ async function request<T>(
 	options: RequestInit = {},
 	schema?: z.ZodType<T>
 ): Promise<T> {
+	const headers: Record<string, string> = {
+		'Content-Type': 'application/json',
+		...((options.headers as Record<string, string> | undefined) ?? {})
+	};
+	const token = getToken();
+	if (token) headers['Authorization'] = `Bearer ${token}`;
+
 	const res = await fetch(`${API_BASE_URL}${path}`, {
 		credentials: 'include',
-		headers: { 'Content-Type': 'application/json', ...(options.headers ?? {}) },
-		...options
+		...options,
+		headers
 	});
 
 	if (res.status === 401 && typeof window !== 'undefined') {
+		clearToken();
 		const { clearSession } = await import('$lib/stores/auth');
 		clearSession();
 		window.location.href = '/login';
