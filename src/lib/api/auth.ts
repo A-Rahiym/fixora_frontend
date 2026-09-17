@@ -29,9 +29,7 @@ export async function getMe(): Promise<SessionUser> {
 	if (candidate && typeof candidate === 'object' && 'data' in candidate) {
 		const data = (candidate as { data: unknown }).data;
 		candidate =
-			data && typeof data === 'object' && 'user' in data
-				? (data as { user: unknown }).user
-				: data;
+			data && typeof data === 'object' && 'user' in data ? (data as { user: unknown }).user : data;
 	}
 	return toSessionUser(UserResourceSchema.parse(candidate));
 }
