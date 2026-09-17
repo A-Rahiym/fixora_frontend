@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { requestResetLink } from '$lib/features/forgot-password/request';
+	import Alert from '$lib/components/ui/Alert.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import FormField from '$lib/components/ui/FormField.svelte';
+	import TextInput from '$lib/components/ui/TextInput.svelte';
 
 	let email = $state('');
 	let submitting = $state(false);
@@ -30,40 +34,34 @@
 	</div>
 
 	{#if sent}
-		<p
-			data-testid="forgot-success"
-			role="status"
-			class="rounded-lg bg-green-50 p-3 text-sm text-green-800"
-		>
-			If an account exists for that email, a reset link is on its way.
-		</p>
+		<Alert
+			variant="success"
+			message="If an account exists for that email, a reset link is on its way."
+			testid="forgot-success"
+		/>
 		<p class="mt-4 text-center text-sm">
 			<a href={resolve('/login')} class="text-primary-600 hover:text-primary-700">Back to login</a>
 		</p>
 	{:else}
 		{#if error}
-			<p role="alert" class="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>
+			<div class="mb-4">
+				<Alert variant="error" message={error} />
+			</div>
 		{/if}
 		<form onsubmit={handleSubmit} class="space-y-4" novalidate>
-			<div>
-				<label for="email" class="mb-1 block text-sm font-medium text-slate-700">Email</label>
-				<input
+			<FormField label="Email" inputId="email" error={fieldError}>
+				<TextInput
 					id="email"
 					type="email"
 					autocomplete="email"
 					bind:value={email}
-					aria-invalid={!!fieldError}
-					class="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none"
+					invalid={!!fieldError}
+					describedby={fieldError ? 'email-error' : undefined}
 				/>
-				{#if fieldError}<p class="mt-1 text-xs text-red-600">{fieldError}</p>{/if}
-			</div>
-			<button
-				type="submit"
-				disabled={submitting}
-				class="w-full rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white hover:bg-primary-700 disabled:opacity-60"
-			>
+			</FormField>
+			<Button type="submit" loading={submitting}>
 				{submitting ? 'Sending…' : 'Send reset link'}
-			</button>
+			</Button>
 		</form>
 		<p class="mt-4 text-center text-sm">
 			<a href={resolve('/login')} class="text-primary-600 hover:text-primary-700">Back to login</a>

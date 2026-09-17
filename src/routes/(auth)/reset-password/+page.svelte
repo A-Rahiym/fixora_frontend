@@ -3,6 +3,10 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { resetWithToken } from '$lib/features/reset-password/request';
+	import Alert from '$lib/components/ui/Alert.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import FormField from '$lib/components/ui/FormField.svelte';
+	import PasswordInput from '$lib/components/ui/PasswordInput.svelte';
 
 	const token = $derived(page.url.searchParams.get('token') ?? '');
 
@@ -34,76 +38,57 @@
 	</div>
 
 	{#if !token}
-		<p
-			data-testid="reset-no-token"
-			role="alert"
-			class="rounded-lg bg-red-50 p-3 text-sm text-red-700"
-		>
-			This reset link is invalid or missing its token. Request a new one.
-		</p>
+		<Alert
+			variant="error"
+			message="This reset link is invalid or missing its token. Request a new one."
+			testid="reset-no-token"
+		/>
 		<p class="mt-4 text-center text-sm">
-			<a href={resolve('/forgot-password')} class="text-primary-600 hover:text-primary-700"
-				>Request a new link</a
-			>
+			<a href={resolve('/forgot-password')} class="text-primary-600 hover:text-primary-700">
+				Request a new link
+			</a>
 		</p>
 	{:else if done}
-		<p
-			data-testid="reset-success"
-			role="status"
-			class="rounded-lg bg-green-50 p-3 text-sm text-green-800"
-		>
-			Password updated. You can now log in.
-		</p>
-		<button
-			onclick={() => goto(resolve('/login'))}
-			class="mt-4 w-full rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white hover:bg-primary-700"
-		>
-			Back to login
-		</button>
+		<Alert
+			variant="success"
+			message="Password updated. You can now log in."
+			testid="reset-success"
+		/>
+		<div class="mt-4">
+			<Button onclick={() => goto(resolve('/login'))}>Back to login</Button>
+		</div>
 	{:else}
 		{#if error}
-			<p role="alert" class="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>
+			<div class="mb-4">
+				<Alert variant="error" message={error} />
+			</div>
 		{/if}
 		<form onsubmit={handleSubmit} class="space-y-4" novalidate>
-			<div>
-				<label for="password" class="mb-1 block text-sm font-medium text-slate-700"
-					>New password</label
-				>
-				<input
+			<FormField label="New password" inputId="password" error={fieldErrors.password}>
+				<PasswordInput
 					id="password"
-					type="password"
 					autocomplete="new-password"
 					bind:value={password}
-					aria-invalid={!!fieldErrors.password}
-					class="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none"
+					invalid={!!fieldErrors.password}
+					describedby={fieldErrors.password ? 'password-error' : undefined}
 				/>
-				{#if fieldErrors.password}<p class="mt-1 text-xs text-red-600">
-						{fieldErrors.password}
-					</p>{/if}
-			</div>
-			<div>
-				<label for="passwordConfirm" class="mb-1 block text-sm font-medium text-slate-700">
-					Confirm new password
-				</label>
-				<input
+			</FormField>
+			<FormField
+				label="Confirm new password"
+				inputId="passwordConfirm"
+				error={fieldErrors.passwordConfirm}
+			>
+				<PasswordInput
 					id="passwordConfirm"
-					type="password"
 					autocomplete="new-password"
 					bind:value={passwordConfirm}
-					aria-invalid={!!fieldErrors.passwordConfirm}
-					class="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none"
+					invalid={!!fieldErrors.passwordConfirm}
+					describedby={fieldErrors.passwordConfirm ? 'passwordConfirm-error' : undefined}
 				/>
-				{#if fieldErrors.passwordConfirm}<p class="mt-1 text-xs text-red-600">
-						{fieldErrors.passwordConfirm}
-					</p>{/if}
-			</div>
-			<button
-				type="submit"
-				disabled={submitting}
-				class="w-full rounded-lg bg-primary-600 px-3 py-2 text-sm font-semibold text-white hover:bg-primary-700 disabled:opacity-60"
-			>
+			</FormField>
+			<Button type="submit" loading={submitting}>
 				{submitting ? 'Saving…' : 'Set new password'}
-			</button>
+			</Button>
 		</form>
 	{/if}
 </div>
