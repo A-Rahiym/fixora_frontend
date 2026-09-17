@@ -1,9 +1,13 @@
+import { redirect } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
+import { getMe } from '$lib/api/auth';
 
-/**
- * Phase 1 will load the current user here and redirect to /login when
- * unauthenticated (guide §Phase 1). Phase 0: passthrough stub.
- */
+/** Auth guard: unauthenticated access to any (app) route redirects to /login. */
 export const load: LayoutLoad = async () => {
-	return {};
+	try {
+		const user = await getMe();
+		return { user };
+	} catch {
+		redirect(302, '/login');
+	}
 };
