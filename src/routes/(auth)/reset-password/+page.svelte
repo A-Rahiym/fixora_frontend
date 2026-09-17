@@ -31,64 +31,66 @@
 	}
 </script>
 
-<div class="w-full max-w-sm rounded-xl border border-border bg-surface p-8 shadow-sm">
-	<div class="mb-6">
-		<p class="text-xl font-bold text-slate-900">Fixora</p>
-		<h1 class="mt-1 text-lg font-semibold text-slate-900">Set a new password</h1>
-	</div>
-
-	{#if !token}
-		<Alert
-			variant="error"
-			message="This reset link is invalid or missing its token. Request a new one."
-			testid="reset-no-token"
-		/>
-		<p class="mt-4 text-center text-sm">
-			<a href={resolve('/forgot-password')} class="text-primary-600 hover:text-primary-700">
-				Request a new link
-			</a>
-		</p>
-	{:else if done}
-		<Alert
-			variant="success"
-			message="Password updated. You can now log in."
-			testid="reset-success"
-		/>
-		<div class="mt-4">
-			<Button onclick={() => goto(resolve('/login'))}>Back to login</Button>
+<div class="flex min-h-screen items-center justify-center bg-auth-page p-4">
+	<div class="w-full max-w-sm rounded-xl border border-border bg-surface p-8 shadow-sm">
+		<div class="mb-6">
+			<p class="text-xl font-bold text-slate-900">Fixora</p>
+			<h1 class="mt-1 text-lg font-semibold text-slate-900">Set a new password</h1>
 		</div>
-	{:else}
-		{#if error}
-			<div class="mb-4">
-				<Alert variant="error" message={error} />
+
+		{#if !token}
+			<Alert
+				variant="error"
+				message="This reset link is invalid or missing its token. Request a new one."
+				testid="reset-no-token"
+			/>
+			<p class="mt-4 text-center text-sm">
+				<a href={resolve('/forgot-password')} class="text-primary-600 hover:text-primary-700">
+					Request a new link
+				</a>
+			</p>
+		{:else if done}
+			<Alert
+				variant="success"
+				message="Password updated. You can now log in."
+				testid="reset-success"
+			/>
+			<div class="mt-4">
+				<Button onclick={() => goto(resolve('/login'))}>Back to login</Button>
 			</div>
+		{:else}
+			{#if error}
+				<div class="mb-4">
+					<Alert variant="error" message={error} />
+				</div>
+			{/if}
+			<form onsubmit={handleSubmit} class="space-y-4" novalidate>
+				<FormField label="New password" inputId="password" error={fieldErrors.password}>
+					<PasswordInput
+						id="password"
+						autocomplete="new-password"
+						bind:value={password}
+						invalid={!!fieldErrors.password}
+						describedby={fieldErrors.password ? 'password-error' : undefined}
+					/>
+				</FormField>
+				<FormField
+					label="Confirm new password"
+					inputId="passwordConfirm"
+					error={fieldErrors.passwordConfirm}
+				>
+					<PasswordInput
+						id="passwordConfirm"
+						autocomplete="new-password"
+						bind:value={passwordConfirm}
+						invalid={!!fieldErrors.passwordConfirm}
+						describedby={fieldErrors.passwordConfirm ? 'passwordConfirm-error' : undefined}
+					/>
+				</FormField>
+				<Button type="submit" loading={submitting}>
+					{submitting ? 'Saving…' : 'Set new password'}
+				</Button>
+			</form>
 		{/if}
-		<form onsubmit={handleSubmit} class="space-y-4" novalidate>
-			<FormField label="New password" inputId="password" error={fieldErrors.password}>
-				<PasswordInput
-					id="password"
-					autocomplete="new-password"
-					bind:value={password}
-					invalid={!!fieldErrors.password}
-					describedby={fieldErrors.password ? 'password-error' : undefined}
-				/>
-			</FormField>
-			<FormField
-				label="Confirm new password"
-				inputId="passwordConfirm"
-				error={fieldErrors.passwordConfirm}
-			>
-				<PasswordInput
-					id="passwordConfirm"
-					autocomplete="new-password"
-					bind:value={passwordConfirm}
-					invalid={!!fieldErrors.passwordConfirm}
-					describedby={fieldErrors.passwordConfirm ? 'passwordConfirm-error' : undefined}
-				/>
-			</FormField>
-			<Button type="submit" loading={submitting}>
-				{submitting ? 'Saving…' : 'Set new password'}
-			</Button>
-		</form>
-	{/if}
+	</div>
 </div>

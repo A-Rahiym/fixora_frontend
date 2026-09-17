@@ -33,8 +33,18 @@
 	--color-surface-muted: #f8fafc;
 	--color-border: #e2e8f0;
 
+	/* Brand (screens/login.html) */
+	--color-brand-50: #eef2ff;
+	--color-brand-500: #5046e5;
+	--color-brand-600: #4739e6;
+	--color-brand-700: #4338ca;
+
+	/* Auth surfaces (screens/login.html) */
+	--color-auth-page: #f1f2f6;
+	--color-auth-panel: #fbfbfe;
+
 	/* Type */
-	--font-sans: ui-sans-serif, system-ui, sans-serif;
+	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 	--font-mono: ui-monospace, monospace;
 }
 

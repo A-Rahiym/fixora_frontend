@@ -2,6 +2,7 @@
 	const { children } = $props();
 </script>
 
-<div class="flex min-h-screen items-center justify-center bg-surface-muted">
+<!-- Neutral frame: each (auth) page owns its own layout (login split-screen, centered cards). -->
+<div class="min-h-screen">
 	{@render children()}
 </div>
