@@ -16,7 +16,6 @@ const MessageSchema = z.object({ message: z.string() }).passthrough();
 /** POST /api/v1/auth/login — stores the bearer token, returns the session user. */
 export async function login(input: LoginInput): Promise<SessionUser> {
 	const json = await apiClient.post('/api/v1/auth/login', input);
-	console.log('login response', json);
 	const parsed = LoginResponseSchema.parse(json);
 	setToken(parsed.data.token);
 	return toSessionUser(parsed.data.user);
