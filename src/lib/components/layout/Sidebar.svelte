@@ -49,7 +49,13 @@
 		},
 		{ label: 'Jobs List', icon: ICONS.jobs, iconName: 'jobs' },
 		{ label: 'New Job Intake', icon: ICONS.intake, iconName: 'intake' },
-		{ label: 'Customers', icon: ICONS.customers, iconName: 'customers' },
+		{
+			label: 'Customers',
+			href: resolve('/customers'),
+			icon: ICONS.customers,
+			iconName: 'customers',
+			match: '/customers'
+		},
 		{ label: 'Inventory', icon: ICONS.inventory, iconName: 'inventory' },
 		{ label: 'POS / Payments', icon: ICONS.pos, iconName: 'pos' },
 		{ label: 'Technicians', icon: ICONS.technicians, iconName: 'technicians' },
