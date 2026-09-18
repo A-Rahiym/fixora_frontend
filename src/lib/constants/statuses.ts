@@ -27,3 +27,24 @@ export const REPAIR_STATUS_LABELS: Record<RepairStatus, string> = {
 	unrepairable: 'Unrepairable',
 	cancelled: 'Cancelled'
 };
+
+export type StatusTone = 'info' | 'warning' | 'success' | 'muted';
+
+/** Display tone per canonical status (presentation only — statuses stay canonical). */
+export function statusTone(status: RepairStatus): StatusTone {
+	switch (status) {
+		case 'received':
+		case 'diagnosing':
+		case 'awaiting_approval':
+			return 'warning';
+		case 'approved':
+		case 'in_repair':
+		case 'quality_check':
+			return 'info';
+		case 'ready_for_collection':
+		case 'collected':
+			return 'success';
+		default:
+			return 'muted';
+	}
+}

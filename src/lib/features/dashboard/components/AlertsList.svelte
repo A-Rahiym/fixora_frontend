@@ -49,7 +49,9 @@
 				<div class="flex-1">
 					<div class="flex items-center justify-between gap-2">
 						<span class="text-xs font-semibold text-slate-900">{alert.title}</span>
-						<span class="shrink-0 text-[10px] text-slate-400">{alert.timeAgo}</span>
+						{#if alert.timeAgo}
+							<span class="shrink-0 text-[10px] text-slate-400">{alert.timeAgo}</span>
+						{/if}
 					</div>
 					<p class="mt-0.5 text-[11px] leading-snug text-slate-500">{alert.detail}</p>
 				</div>
