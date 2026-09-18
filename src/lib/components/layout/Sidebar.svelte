@@ -83,7 +83,7 @@
 </script>
 
 <aside
-	class="flex shrink-0 flex-col justify-between border-r border-border bg-shell-sidebar select-none {rail
+	class="flex min-h-full shrink-0 flex-col justify-between border-r border-border bg-shell-sidebar select-none {rail
 		? 'w-16'
 		: 'w-64'}"
 >
