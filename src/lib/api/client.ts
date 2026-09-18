@@ -7,13 +7,14 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 export interface ApiErrorShape {
 	status: number;
 	message: string;
-	errors?: Record<string, string[]>;
+	/** Validation bags (`{ field: [...] }`) or embedded records (e.g. `{ customer: {...} }`). */
+	errors?: Record<string, unknown>;
 }
 
 const ApiErrorSchema = z.object({
 	status: z.number(),
 	message: z.string(),
-	errors: z.record(z.string(), z.array(z.string())).optional()
+	errors: z.record(z.string(), z.unknown()).optional()
 });
 
 async function request<T>(
@@ -32,6 +33,8 @@ async function request<T>(
 		credentials: 'include',
 		...options,
 		headers
+	}).catch(() => {
+		throw { status: 0, message: 'Backend unreachable' } satisfies ApiErrorShape;
 	});
 
 	if (res.status === 401 && typeof window !== 'undefined') {
